@@ -14,7 +14,7 @@ class Home  extends CI_Controller {
 	{
 		$data['user'] = array();
 		// $data['contents'] = $this->load->view("home/Home_view",$data,true);
-		$this->load->view("admin/home/layout/main_wrapper_view",$data);
+		$this->load->view("teacher/home/layout/main_wrapper_view",$data);
     
 	}
 }
