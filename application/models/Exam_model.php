@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Exam_model extends CI_Model {
 	
-    private $table = "Exam_tbl";
+    private $table = "exam_tbl";
 
     public function read()
     {
@@ -23,4 +23,9 @@ class Exam_model extends CI_Model {
 		// 	return false;
 		// }
     }
+
+	public function create($data = [])
+	{
+		return $this->db->insert($this->table,$data);
+	}
 }

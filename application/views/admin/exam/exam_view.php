@@ -41,10 +41,10 @@
                   <tr>
                     <td><?php echo $sl?></td>
                     <td><?php echo $exam->e_name?></td>
-                    <td><?php echo $exam->e_reg_start?></td>
-                    <td><?php echo $exam->e_reg_end?></td>
-                    <td><?php echo $exam->e_exam_start?></td>
-                    <td><?php echo $exam->e_exam_end?></td>
+                    <td><?php echo date("Y-M-d h:m:sa", strtotime($exam->e_reg_start));?></td>
+                    <td><?php echo date("Y-M-d h:m:sa", strtotime($exam->e_reg_end));?></td>
+                    <td><?php echo date("Y-M-d h:m:sa", strtotime($exam->e_exam_start));?></td>
+                    <td><?php echo date("Y-M-d h:m:sa", strtotime($exam->e_exam_end));?></td>
                     <td><?php echo $exam->e_status?></td>
                     <td></td>
                   </tr>

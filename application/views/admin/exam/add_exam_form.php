@@ -13,45 +13,85 @@
           </div>
           <!-- /.card-header -->
           <!-- form start -->
-          <form class="form-horizontal">
-            <div class="card-body">
-              <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
-                  <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                </div>
+          <div class="card-body">
+            <!-- alert message -->
+            <?php if ($this->session->flashdata('message') != null) {  ?>
+              <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <?php echo $this->session->flashdata('message'); $this->session->unset_userdata('message');?>
+              </div> 
+            <?php } ?>
+	
+	          <?php if ($this->session->flashdata('exception') != null) {  ?>
+	            <div class="alert alert-danger alert-dismissable">
+		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		            <?php echo $this->session->flashdata('exception'); $this->session->unset_userdata('exception');?>
+	            </div>
+	          <?php } ?>
+            <?php if( validation_errors() ) { ?> 
+              <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-ban"></i>Alert</h5>
+                <?php echo validation_errors();?>
               </div>
-              <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Date and time:</label>
-                  <div class="col-sm-10 input-group date" id="reservationdatetime" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime">
-                      <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
+            <?php } ?>
+            <form class="form-horizontal" action="<?php echo base_url('admin/exam/create')?>" method="post">
+              <div class="card-body">
+                <div class="form-group row">
+                  <label for="exam_name" class="col-sm-2 col-form-label">Exam Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="exam_name" name="exam_name" placeholder="Exam Name" value="<?php echo $input->e_name;?>">
                   </div>
-              </div>
-              <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
-                  <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Reg. start date</label>
+                  <!-- data-date="<?php// echo date('Y-m-d H:m:s A')?>" data-date-format="YYYY-DD-mm H:mm:ss A" -->
+                    <div class="col-sm-10 input-group date" id="reg_start_date" data-target-input="nearest" >
+                        <input type="text" placeholder="Registration start date" value="<?php echo $input->e_reg_start;?>" class="form-control datetimepicker-input" name="reg_start_date" data-target="#reg_start_date">
+                        <div class="input-group-append" data-target="#reg_start_date" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Reg. end date</label>
+                    <div class="col-sm-10 input-group date" id="reg_end_date" data-target-input="nearest">
+                        <input type="text" placeholder="Registration end date" value="<?php echo $input->e_reg_end;?>" class="form-control datetimepicker-input" name="reg_end_date" data-target="#reg_end_date">
+                        <div class="input-group-append" data-target="#reg_end_date" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Exam start date</label>
+                    <div class="col-sm-10 input-group date" id="exam_start_date" data-target-input="nearest">
+                        <input type="text" placeholder="Examination start date" value="<?php echo $input->e_exam_start;?>" class="form-control datetimepicker-input" name="exam_start_date" data-target="#exam_start_date">
+                        <div class="input-group-append" data-target="#exam_start_date" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label">Exam Date End</label>
+                    <div class="col-sm-10 input-group date" id="exam_end_date" data-target-input="nearest">
+                        <input type="text" placeholder="Examination end date" value="<?php echo $input->e_exam_end;?>" class="form-control datetimepicker-input" name="exam_end_date" data-target="#exam_end_date">
+                        <div class="input-group-append" data-target="#exam_end_date" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
                 </div>
               </div>
-              <div class="form-group row">
-                <div class="offset-sm-2 col-sm-10">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck2">
-                    <label class="form-check-label" for="exampleCheck2">Remember me</label>
-                  </div>
-                </div>
+
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button type="submit" class="btn btn-info float-right">Save</button>
               </div>
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-              <button type="submit" class="btn btn-info">Sign in</button>
-              <button type="submit" class="btn btn-default float-right">Cancel</button>
-            </div>
-            <!-- /.card-footer -->
-          </form>
+              <!-- /.card-footer -->
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -71,6 +111,10 @@
   $(function () {
     //$.noConflict();
   //Date and time picker
-    $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
+    $('#reg_start_date ').datetimepicker({ icons: { time: 'far fa-clock' } });
+    $('#reg_end_date ').datetimepicker({ icons: { time: 'far fa-clock' } });
+    $('#exam_start_date ').datetimepicker({ icons: { time: 'far fa-clock' } });
+    $('#exam_end_date ').datetimepicker({ icons: { time: 'far fa-clock' } });
+
   });
   </script>
