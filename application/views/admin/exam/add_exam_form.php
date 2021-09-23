@@ -1,5 +1,11 @@
 <!-- daterange picker -->
-<link rel="stylesheet" href="<?php echo base_url('vendor/almasaeed2010/adminlte/');?>plugins/daterangepicker/daterangepicker.css">
+<link rel="stylesheet" href="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/daterangepicker/daterangepicker.css">
+
+<style>
+  div>span.badge.bg-danger.p-1 {
+    width: 100%;
+  }
+</style>
 
 <section class="content">
   <div class="container-fluid">
@@ -7,91 +13,87 @@
       <!-- left column -->
       <div class="col-md-12">
         <!-- Horizontal form elements -->
-        <div class="card card-info">
+        <div class="card card-outline card-primary">
           <div class="card-header">
             <h3 class="card-title">Add Exam</h3>
+            <a href="<?php echo base_url('admin/exam/index'); ?>" class="col-sm-2 btn btn-info float-right">View Exam</a>
           </div>
           <!-- /.card-header -->
           <!-- form start -->
-          <div class="card-body">
-            <!-- alert message -->
-            <?php if ($this->session->flashdata('message') != null) {  ?>
-              <div class="alert alert-info alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <?php echo $this->session->flashdata('message'); $this->session->unset_userdata('message');?>
-              </div> 
-            <?php } ?>
-	
-	          <?php if ($this->session->flashdata('exception') != null) {  ?>
-	            <div class="alert alert-danger alert-dismissable">
-		            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		            <?php echo $this->session->flashdata('exception'); $this->session->unset_userdata('exception');?>
-	            </div>
-	          <?php } ?>
-            <?php if( validation_errors() ) { ?> 
-              <div class="alert alert-danger alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <h5><i class="icon fas fa-ban"></i>Alert</h5>
-                <?php echo validation_errors();?>
+          <form class="form-horizontal" action="<?php echo base_url('admin/exam/create') ?>" method="post">
+            <div class="card-body">
+              <?php echo form_hidden('e_id', $input->e_id) ?>
+              <div class="row">
+                <!-- Exam Name -->
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label for="exam_name">Exam Name</label>
+                    <input type="text" class="form-control" id="exam_name" name="exam_name" placeholder="Exam Name" value="<?php echo $input->e_name; ?>">
+                    <?php echo form_error('exam_name', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                  </div>
+                </div>
               </div>
-            <?php } ?>
-            <form class="form-horizontal" action="<?php echo base_url('admin/exam/create')?>" method="post">
-              <div class="card-body">
-                <div class="form-group row">
-                  <label for="exam_name" class="col-sm-2 col-form-label">Exam Name</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" id="exam_name" name="exam_name" placeholder="Exam Name" value="<?php echo $input->e_name;?>">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Reg Date Start:</label>
+                    <div class="input-group date initdatetime" id="reg_start_date" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#reg_start_date" name="reg_start_date" value="<?php echo isset($input->e_reg_start) ? $input->e_reg_start : date('Y-m-d H:m A'); ?>">
+                      <div class="input-group-append" data-target="#reg_start_date" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
+                    </div>
+                    <?php echo form_error('reg_start_date', '<span class="badge bg-danger p-1">', '</span>'); ?>
                   </div>
                 </div>
 
-                <div class="form-group row">
-                  <label class="col-sm-2 col-form-label">Reg. start date</label>
-                  <!-- data-date="<?php// echo date('Y-m-d H:m:s A')?>" data-date-format="YYYY-DD-mm H:mm:ss A" -->
-                    <div class="col-sm-10 input-group date" id="reg_start_date" data-target-input="nearest" >
-                        <input type="text" placeholder="Registration start date" value="<?php echo $input->e_reg_start;?>" class="form-control datetimepicker-input" name="reg_start_date" data-target="#reg_start_date">
-                        <div class="input-group-append" data-target="#reg_start_date" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Reg End Date:</label>
+                    <div class="input-group date initdatetime" id="reg_end_date" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#reg_end_date" name="reg_end_date" value="<?php echo isset($input->e_reg_end) ? $input->e_reg_end : date('Y-m-d H:m A'); ?>">
+                      <div class="input-group-append" data-target="#reg_end_date" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-sm-2 col-form-label">Reg. end date</label>
-                    <div class="col-sm-10 input-group date" id="reg_end_date" data-target-input="nearest">
-                        <input type="text" placeholder="Registration end date" value="<?php echo $input->e_reg_end;?>" class="form-control datetimepicker-input" name="reg_end_date" data-target="#reg_end_date">
-                        <div class="input-group-append" data-target="#reg_end_date" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
-                    </div>
+                    <?php echo form_error('reg_end_date', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                  </div>
                 </div>
 
-                <div class="form-group row">
-                  <label class="col-sm-2 col-form-label">Exam start date</label>
-                    <div class="col-sm-10 input-group date" id="exam_start_date" data-target-input="nearest">
-                        <input type="text" placeholder="Examination start date" value="<?php echo $input->e_exam_start;?>" class="form-control datetimepicker-input" name="exam_start_date" data-target="#exam_start_date">
-                        <div class="input-group-append" data-target="#exam_start_date" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Examination Start Date:</label>
+                    <div class="input-group date initdatetime" id="exam_start_date" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#exam_start_date" name="exam_start_date" value="<?php echo isset($input->e_exam_start) ? $input->e_exam_start : date('Y-m-d H:m A'); ?>">
+                      <div class="input-group-append" data-target="#exam_start_date" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
                     </div>
+                    <?php echo form_error('exam_start_date', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                  </div>
                 </div>
 
-                <div class="form-group row">
-                  <label class="col-sm-2 col-form-label">Exam Date End</label>
-                    <div class="col-sm-10 input-group date" id="exam_end_date" data-target-input="nearest">
-                        <input type="text" placeholder="Examination end date" value="<?php echo $input->e_exam_end;?>" class="form-control datetimepicker-input" name="exam_end_date" data-target="#exam_end_date">
-                        <div class="input-group-append" data-target="#exam_end_date" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Examination End Date:</label>
+                    <div class="input-group date initdatetime" id="exam_end_date" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#exam_end_date" name="exam_end_date" value="<?php echo isset($input->e_exam_end) ? $input->e_exam_end : date('Y-m-d H:m A'); ?>">
+                      <div class="input-group-append" data-target="#exam_end_date" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
                     </div>
+                    <?php echo form_error('exam_end_date', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <!-- /.card-body -->
-              <div class="card-footer">
-                <button type="submit" class="btn btn-info float-right">Save</button>
-              </div>
-              <!-- /.card-footer -->
-            </form>
-          </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+              <button type="submit" class="col-sm-3 btn btn-info float-right">Save</button>
+            </div>
+            <!-- /.card-footer -->
+          </form>
         </div>
       </div>
     </div>
@@ -100,21 +102,55 @@
 </section>
 
 <!-- jQuery -->
-<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/');?>plugins/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/');?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- date-range-picker -->
-<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/');?>plugins/daterangepicker/daterangepicker.js"></script>
+<script src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>plugins/daterangepicker/daterangepicker.js"></script>
 
 <script>
-  $(function () {
+  $(function() {
+
+    //Date and time picker
+    $('.initdatetime').datetimepicker({
+      icons: {
+        time: 'far fa-clock'
+      },
+      format: 'YYYY-MM-DD HH:mm A'
+    });
+
+    //$('.initdatetime').data('datetimepicker').date(new Date())
     //$.noConflict();
-  //Date and time picker
-    $('#reg_start_date ').datetimepicker({ icons: { time: 'far fa-clock' } });
-    $('#reg_end_date ').datetimepicker({ icons: { time: 'far fa-clock' } });
-    $('#exam_start_date ').datetimepicker({ icons: { time: 'far fa-clock' } });
-    $('#exam_end_date ').datetimepicker({ icons: { time: 'far fa-clock' } });
+    //Date and time picker
+    //$('#reg_start_date').datetimepicker(
+    //   {
+    //   icons: {
+    //     time: 'far fa-clock'
+    //   }
+    // }
+    //  );
+    //  $('#reg_start_date ').datetimepicker({
+    //   icons: {
+    //     time: 'far fa-clock'
+    //   },
+    //   format: 'YYYY-MM-DD HH:mm A'
+    // });
+    // $('#reg_end_date ').datetimepicker({
+    //   icons: {
+    //     time: 'far fa-clock'
+    //   }
+    // });
+    // $('#exam_start_date ').datetimepicker({
+    //   icons: {
+    //     time: 'far fa-clock'
+    //   }
+    // });
+    // $('#exam_end_date ').datetimepicker({
+    //   icons: {
+    //     time: 'far fa-clock'
+    //   }
+    // });
 
   });
-  </script>
+</script>

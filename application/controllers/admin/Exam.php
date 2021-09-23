@@ -8,6 +8,10 @@ class Exam extends CI_Controller
 		parent::__construct();
 		date_default_timezone_set("Asia/Kolkata");
 		$this->load->model(['exam_model']);
+
+		if ($this->session->userdata('isLogIn') == false || $this->session->userdata('user_role') != 1)
+			redirect('login');
+		$this->user_id = $this->session->userdata('user_id');
 	}
 
 	public function index()
@@ -86,17 +90,22 @@ class Exam extends CI_Controller
 
 
 		$data['input'] = (object) $postData = [
-			'e_id' 			=> isset($e_id) ? $e_id : null,
-			'e_name'		=> $this->input->post('exam_name'),
-			'e_reg_start' 	=> date('Y-m-d H:m:s', strtotime($this->input->post('reg_start_date'))),
-			'e_reg_end' 	=> date('Y-m-d H:m:s', strtotime($this->input->post('reg_end_date'))),
-			'e_exam_start'	=> date('Y-m-d H:m:s', strtotime($this->input->post('exam_start_date'))),
-			'e_exam_end'	=> date('Y-m-d H:m:s', strtotime($this->input->post('exam_end_date'))),
-			'e_doc'			=> date('Y-m-d H:m:s'),
-			'e_dou'			=> null,
+			'e_id' 					=> isset($e_id) ? $e_id : null,
+			'e_name'				=> $this->input->post('exam_name'),
+			'e_reg_start' 	=> empty($this->input->post('reg_start_date')) ?
+				date('Y-m-d H:m:s') : $this->input->post('reg_start_date'),
+			'e_reg_end' 		=> empty($this->input->post('reg_end_date')) ?
+				date('Y-m-d H:m:s') : $this->input->post('reg_end_date'),
+			'e_exam_start'	=> empty($this->input->post('exam_start_date')) ?
+				date('Y-m-d H:m:s') : $this->input->post('exam_start_date'),
+			'e_exam_end'		=> empty($this->input->post('exam_end_date')) ?
+				date('Y-m-d H:m:s') : $this->input->post('exam_end_date'),
+			'e_doc'					=> date('Y-m-d H:m:s'),
+			'e_dou'					=> empty($e_id) ? null : date('Y-m-d H:m:s'),
 			'e_created_by'	=> $this->session->userdata('user_id'),
-			'e_status'		=> 1 //$this->input->post('exam_end_date'),
+			'e_status'			=> 1 //$this->input->post('exam_end_date'),
 		];
+
 
 		/*-----------CHECK ID -----------*/
 		if (empty($e_id)) {
@@ -105,7 +114,7 @@ class Exam extends CI_Controller
 				if ($this->exam_model->create($postData)) {
 					#set success message
 					$this->session->set_flashdata('message', 'Save Successfully');
-					redirect('admin/exam/create');
+					redirect('admin/exam/index');
 				} else {
 					#set exception message
 					$this->session->set_flashdata('exception', 'Please Try Againmmmm');
@@ -133,20 +142,29 @@ class Exam extends CI_Controller
 				redirect('admin/exam/edit/' . $e_id);
 			}
 		}
-
-
-
-		// if($this->form_validation->run() === true){
-		// 	$this->exam_model->create($postData);
-		// }
-
-		// $data['contents'] = $this->load->view("admin/exam/add_exam_form",$data,true);
-		// $this->load->view("admin/home/layout/main_wrapper_view",$data);
 	}
-	public function contact_us()
+
+	# used functional
+	public function edit($e_id = null)
 	{
-		$data[] = "";
-		$data['contents'] = $this->load->view("contact/contact_us_view", $data, true);
-		$this->load->view("home/layout/main_wrapper_view", $data);
+		if (empty($e_id)) {
+			redirect('admin/exam/create');
+		}
+		#-------------------------------#
+		$data['input']	= $this->exam_model->read_by_id($e_id);
+
+		$data['contents'] = $this->load->view('admin/exam/add_exam_form', $data, true);
+		$this->load->view('admin/home/layout/main_wrapper_view', $data);
+	}
+
+	# Used
+	public function delete($e_id)
+	{
+		if ($this->exam_model->delete($e_id)) {
+			$this->session->set_flashdata('message', 'Delete Successfully');
+		} else {
+			$this->session->set_flashdata('exception', 'Please Try Again');
+		}
+		redirect('admin/exam/index');
 	}
 }
