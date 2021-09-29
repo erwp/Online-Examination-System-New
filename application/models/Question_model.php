@@ -43,11 +43,23 @@ class Question_model extends CI_Model
 
 	public function read_by_exam($exam_id = null)
 	{
-		return $this->db->select("*")
+		$result = $this->db->select("*")
 			->from($this->table)
 			->where('q_e_id', $exam_id)
+			->where('q_status', 1)
 			->get()
 			->result();
+
+		if (!$result) {
+			return false;
+		} else {
+			//$list[] = '';
+			foreach ($result as $question) {
+				$list[$question->q_id]['question'] = $question->q_question;
+				$list[$question->q_id]['options'] = $this->option_model->read_options_by_q_id($question->q_id);
+			}
+			return $list;
+		}
 	}
 
 	public function update($data = [])

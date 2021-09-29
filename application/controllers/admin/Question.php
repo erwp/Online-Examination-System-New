@@ -16,6 +16,20 @@ class Question extends CI_Controller
 
 	public function validate_user_data()
 	{
+		$validations = array(
+			array(
+				'field' => 'options[o_value][]',
+				'label' => 'Option',
+				'rules' => 'required',
+			),
+			array(
+				'field' => 'options[o_correct]',
+				'label' => 'Correct Option',
+				'rules' => 'required',
+			),
+		);
+
+		$this->form_validation->set_rules($validations);
 		$this->form_validation->set_rules('q_e_id', 		'Exam', 		'required');
 		$this->form_validation->set_rules('q_question',	'Question', 'required');
 	}
@@ -23,7 +37,7 @@ class Question extends CI_Controller
 
 	public function index()
 	{
-		// print_r($_POST);
+
 		// print_r($_SESSION);
 		$q_id = $this->input->post('q_id');
 		$q_e_id = !empty($this->input->post('q_e_id')) ? $this->input->post('q_e_id') : $this->session->userdata('q_e_id');
@@ -40,12 +54,23 @@ class Question extends CI_Controller
 			'q_id' 				=> isset($q_id) ? $q_id : null,
 			'q_e_id' 			=> $q_e_id,
 			'q_question'	=> $this->input->post('q_question'),
+			'options'	=> $this->input->post('options'),
 			'q_doc'				=> date('Y-m-d H:m:s'),
 			'q_dou'				=> empty($q_id) ? null : date('Y-m-d H:m:s'),
 			'q_status'		=> 1
-		];
-		$data['questions'] = $this->question_model->read_by_exam($this->session->userdata('q_e_id'));
 
+		];
+
+		echo "<pre class='offset-sm-3 mt-5' >";
+		print_r($_POST);
+		print_r($data['input']);
+		echo "</pre>";
+		$data['questions'] = $this->question_model->read_by_exam($q_e_id);
+
+		// echo "<pre>";
+		// print_r($data['questions']);
+		// echo "</pre>";
+		// die;
 		// Search the question
 		/*if ($this->input->post('search_question') == 1) {
 			$this->form_validation->set_rules('q_e_id', 		'Exam', 		'required');

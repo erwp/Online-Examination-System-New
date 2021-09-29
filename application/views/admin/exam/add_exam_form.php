@@ -16,7 +16,7 @@
         <div class="card card-outline card-primary">
           <div class="card-header">
             <h3 class="card-title">Add Exam</h3>
-            <a href="<?php echo base_url('admin/exam/index'); ?>" class="col-sm-2 btn btn-info float-right">View Exam</a>
+            <a href="<?php echo base_url('admin/exam/index'); ?>" class="col-sm-2 btn btn-info btn-sm float-right">View Exam</a>
           </div>
           <!-- /.card-header -->
           <!-- form start -->
@@ -38,7 +38,7 @@
                   <div class="form-group">
                     <label>Reg Date Start:</label>
                     <div class="input-group date initdatetime" id="reg_start_date" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#reg_start_date" name="reg_start_date" value="<?php echo isset($input->e_reg_start) ? $input->e_reg_start : date('Y-m-d H:m A'); ?>">
+                      <input type="text" class="form-control datetimepicker-input " data-target="#reg_start_date" name="reg_start_date" value="<?php echo $input->e_reg_start ?>" readonly>
                       <div class="input-group-append" data-target="#reg_start_date" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
@@ -51,7 +51,7 @@
                   <div class="form-group">
                     <label>Reg End Date:</label>
                     <div class="input-group date initdatetime" id="reg_end_date" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#reg_end_date" name="reg_end_date" value="<?php echo isset($input->e_reg_end) ? $input->e_reg_end : date('Y-m-d H:m A'); ?>">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#reg_end_date" name="reg_end_date" value="<?php $input->e_reg_end ?>">
                       <div class="input-group-append" data-target="#reg_end_date" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                       </div>
@@ -117,7 +117,7 @@
       icons: {
         time: 'far fa-clock'
       },
-      format: 'YYYY-MM-DD HH:mm A'
+      format: 'YYYY-MM-DD HH:mm'
     });
 
     //$('.initdatetime').data('datetimepicker').date(new Date())
