@@ -32,6 +32,12 @@ class Option_model extends CI_Model
 		return $this->db->insert($this->table, $data);
 	}
 
+
+	public function create_batch($data = [])
+	{
+		return $this->db->insert_batch($this->table, $data);
+	}
+
 	public function read_by_id($id = null)
 	{
 		return $this->db->select("*")
@@ -87,5 +93,25 @@ class Option_model extends CI_Model
 		} else {
 			return false;
 		}
+	}
+
+	public function read_options_by_question_id_for_edit($q_id)
+	{
+		$result =  $this->db->select("*")
+			->from($this->table)
+			->where('o_q_id', $q_id)
+			->get()
+			->result();
+
+
+		$option_count = 0;
+		foreach ($result as $key => $option) {
+			$list['o_value'][] = $option->o_value;
+			if ($option->o_correct) {
+				$list['o_correct'][] = $option_count;
+			}
+			$option_count++;
+		}
+		return $list;
 	}
 }

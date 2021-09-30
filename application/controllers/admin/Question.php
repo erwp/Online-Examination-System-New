@@ -20,7 +20,7 @@ class Question extends CI_Controller
 			array(
 				'field' => 'options[o_value][]',
 				'label' => 'Option',
-				'rules' => 'required',
+				'rules' => 'required|trim',
 			),
 			array(
 				'field' => 'options[o_correct]',
@@ -37,8 +37,6 @@ class Question extends CI_Controller
 
 	public function index()
 	{
-
-		// print_r($_SESSION);
 		$q_id = $this->input->post('q_id');
 		$q_e_id = !empty($this->input->post('q_e_id')) ? $this->input->post('q_e_id') : $this->session->userdata('q_e_id');
 
@@ -50,39 +48,27 @@ class Question extends CI_Controller
 		// Common functions
 		$data['exam_list'] = $this->exam_model->read_as_list();
 		// Getting user data
-		$data['input'] = (object) $postData = [
+		$data['input'] = (object) $postDataQuestion = [
 			'q_id' 				=> isset($q_id) ? $q_id : null,
 			'q_e_id' 			=> $q_e_id,
 			'q_question'	=> $this->input->post('q_question'),
-			'options'	=> $this->input->post('options'),
 			'q_doc'				=> date('Y-m-d H:m:s'),
 			'q_dou'				=> empty($q_id) ? null : date('Y-m-d H:m:s'),
 			'q_status'		=> 1
 
 		];
 
-		echo "<pre class='offset-sm-3 mt-5' >";
-		print_r($_POST);
-		print_r($data['input']);
-		echo "</pre>";
-		$data['questions'] = $this->question_model->read_by_exam($q_e_id);
+		$data['input_options'] = $this->input->post('options');
 
-		// echo "<pre>";
-		// print_r($data['questions']);
+
+
+		$data['options'] = array();
+		// echo "<pre class='offset-sm-3 mt-5' >";
+		// print_r($_POST);
+		// print_r($data['input']);
+		// print_r($data['options']);
 		// echo "</pre>";
-		// die;
-		// Search the question
-		/*if ($this->input->post('search_question') == 1) {
-			$this->form_validation->set_rules('q_e_id', 		'Exam', 		'required');
-			if ($this->form_validation->run() === true) {
-				$data['questions'] = $this->question_model->read_by_exam($this->session->userdata('q_e_id'));
-			}
-
-			#------------- Default Form Section Display ---------#
-			$data['contents'] = $this->load->view("admin/question/question_view", $data, true);
-			$this->load->view("admin/home/layout/main_wrapper_view", $data);
-			// else add the question if ($this->input->post('add_question') == 1)
-		} else */
+		$data['questions'] = $this->question_model->read_by_exam($q_e_id);
 		if ($this->input->post('add_question') == 1) {
 
 			// Validate the input data
@@ -90,7 +76,22 @@ class Question extends CI_Controller
 
 			if (empty($q_id)) {
 				if ($this->form_validation->run() === true) {
-					if ($this->question_model->create($postData)) {
+					if ($this->question_model->create($postDataQuestion)) {
+						$question_id = $this->db->insert_id();
+						$data['options'] = array();
+						if (is_array($this->input->post('options')['o_value'])) {
+							foreach ($this->input->post('options')['o_value'] as $key => $detail) {
+								//if (!empty($this->input->post('additional')['title'][$key]) && !empty($this->input->post('additional')['value'][$key])) {
+								$data['options'][] = [
+									'o_q_id ' => $question_id,
+									'o_value' => $detail,
+									// 'o_correct' => $this->input->post("options"),
+									'o_correct' => ($this->input->post("options")['o_correct'][0] == $key) ? 1 : 0,
+								];
+								//}
+							}
+						}
+						$this->option_model->create_batch($data['options']);
 						#set success message
 						$this->session->set_flashdata('message', 'Save Successfully');
 						redirect('admin/question/index',);
@@ -107,7 +108,23 @@ class Question extends CI_Controller
 			} else {
 				/*-----------UPDATE A RECORD-----------*/
 				if ($this->form_validation->run() === true) {
-					if ($this->question_model->update($postData)) {
+					if ($this->question_model->update($postDataQuestion)) {
+
+						$this->option_model->delete_option_by_question_id($q_id);
+						$data['options'] = array();
+						if (is_array($this->input->post('options')['o_value'])) {
+							foreach ($this->input->post('options')['o_value'] as $key => $detail) {
+								//if (!empty($this->input->post('additional')['title'][$key]) && !empty($this->input->post('additional')['value'][$key])) {
+								$data['options'][] = [
+									'o_q_id ' => $q_id,
+									'o_value' => $detail,
+									// 'o_correct' => $this->input->post("options"),
+									'o_correct' => ($this->input->post("options")['o_correct'][0] == $key) ? 1 : 0,
+								];
+								//}
+							}
+						}
+						$this->option_model->create_batch($data['options']);
 						#set success message
 						$this->session->set_flashdata('message', 'Update Successfully');
 					} else {
@@ -194,6 +211,14 @@ class Question extends CI_Controller
 		$data['input']	= $this->question_model->read_by_id($q_id);
 		$data['exam_list'] = $this->exam_model->read_as_list();
 		$data['questions'] = $this->question_model->read_by_exam($this->session->userdata('q_e_id'));
+		$data['input_options'] = $this->option_model->read_options_by_question_id_for_edit($q_id);
+
+		echo "<pre class='offset-sm-3 mt-5' >";
+		print_r($_POST);
+		print_r($data['input']);
+		print_r($data['input_options']);
+		echo "</pre>";
+
 		$data['contents'] = $this->load->view('admin/question/question_view', $data, true);
 		$this->load->view('admin/home/layout/main_wrapper_view', $data);
 	}
