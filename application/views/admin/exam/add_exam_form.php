@@ -132,9 +132,11 @@
 
 <script>
   $(function() {
+    
     $('.initdatetime').on('click', function() {
       $(this).datetimepicker('toggle');
     });
+    
     //Date and time picker
     $('.initdatetime').datetimepicker({
       icons: {
@@ -146,43 +148,6 @@
     $("#e_reg_start").on("dp.change", function(e) {
       alert("loo");
     });
-
-    // $('#e_reg_start').on('dp.change', function() {
-    //   //$(this).datetimepicker('toggle');
-    //   alert("hii");
-    // });
-
-    //$('.initdatetime').data('datetimepicker').date(new Date())
-    //$.noConflict();
-    //Date and time picker
-    //$('#e_reg_start').datetimepicker(
-    //   {
-    //   icons: {
-    //     time: 'far fa-clock'
-    //   }
-    // }
-    //  );
-    //  $('#e_reg_start ').datetimepicker({
-    //   icons: {
-    //     time: 'far fa-clock'
-    //   },
-    //   format: 'YYYY-MM-DD HH:mm A'
-    // });
-    // $('#reg_end_date ').datetimepicker({
-    //   icons: {
-    //     time: 'far fa-clock'
-    //   }
-    // });
-    // $('#e_exam_start ').datetimepicker({
-    //   icons: {
-    //     time: 'far fa-clock'
-    //   }
-    // });
-    // $('#e_exam_end ').datetimepicker({
-    //   icons: {
-    //     time: 'far fa-clock'
-    //   }
-    // });
 
   });
 </script>
