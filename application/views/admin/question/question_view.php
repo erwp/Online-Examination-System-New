@@ -59,9 +59,12 @@
                       </div>
                     </div>
                     <?php
-                    // echo "<pre>";
-                    // print_r($questions[2]);
-                    // echo "</pre>";
+                    // dd($input_options);
+                    // dd(isset($input_options));
+                    // echo "---";
+                    // dd(!empty($input_options));
+                    // echo "---";
+                    // dd(count($input_options['o_value']) > 1);
                     ?>
                     <div id="options_div" class="col-sm-12">
                       <input type="hidden" id="row_count" value="1" />
@@ -80,6 +83,8 @@
                                     <input name="options[o_correct][]" value="<?php echo $key; ?>" type="radio" <?php echo ($input_options['o_correct'][0] == $key) ? 'checked' : null; ?>>
                                   </div>
                                 </div>
+                                <?php echo form_error('options[o_value][]', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                                <?php echo form_error('options[o_correct][]', '<span class="badge bg-danger p-1">', '</span>'); ?>
                               </div>
                             </div>
 
@@ -114,6 +119,8 @@
                                 </div>
                               </div>
                             </div>
+                            <?php echo form_error('options[o_value][]', '<span class="badge bg-danger p-1">', '</span>'); ?>
+                            <?php echo form_error('options[o_correct][]', '<span class="badge bg-danger p-1">', '</span>'); ?>
                           </div>
 
                           <div class="col-1">

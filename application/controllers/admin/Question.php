@@ -35,10 +35,10 @@ class Question extends CI_Controller
 	}
 
 
-	public function index()
+	public function index($exam_id = null)
 	{
 		$q_id = $this->input->post('q_id');
-		$q_e_id = !empty($this->input->post('q_e_id')) ? $this->input->post('q_e_id') : $this->session->userdata('q_e_id');
+		$q_e_id = !empty($this->input->post('q_e_id')) ? $this->input->post('q_e_id') : (!empty($exam_id) ? $exam_id : $this->session->userdata('q_e_id'));
 
 		// Store the exam in sessions
 		//if (isset($q_e_id)) {
@@ -60,14 +60,8 @@ class Question extends CI_Controller
 
 		$data['input_options'] = $this->input->post('options');
 
-
-
 		$data['options'] = array();
-		// echo "<pre class='offset-sm-3 mt-5' >";
-		// print_r($_POST);
-		// print_r($data['input']);
-		// print_r($data['options']);
-		// echo "</pre>";
+
 		$data['questions'] = $this->question_model->read_by_exam($q_e_id);
 		if ($this->input->post('add_question') == 1) {
 
@@ -135,7 +129,7 @@ class Question extends CI_Controller
 				} else {
 					#set exception message
 					$this->session->set_flashdata('exception', 'Please Try Again');
-					redirect('admin/question/edit/' . $q_id);
+					$this->edit($q_id);
 				}
 			}
 		} else {
@@ -213,11 +207,11 @@ class Question extends CI_Controller
 		$data['questions'] = $this->question_model->read_by_exam($this->session->userdata('q_e_id'));
 		$data['input_options'] = $this->option_model->read_options_by_question_id_for_edit($q_id);
 
-		echo "<pre class='offset-sm-3 mt-5' >";
-		print_r($_POST);
-		print_r($data['input']);
-		print_r($data['input_options']);
-		echo "</pre>";
+		// echo "<pre class='offset-sm-3 mt-5' >";
+		// print_r($_POST);
+		// print_r($data['input']);
+		// print_r($data['input_options']);
+		// echo "</pre>";
 
 		$data['contents'] = $this->load->view('admin/question/question_view', $data, true);
 		$this->load->view('admin/home/layout/main_wrapper_view', $data);

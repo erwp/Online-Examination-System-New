@@ -25,72 +25,7 @@ class Exam extends CI_Controller
 		$this->load->view("admin/home/layout/main_wrapper_view", $data);
 	}
 
-	public function isExamEndGreaterThan($end_date, $start_date)
-	{
-		try {
-			$start_date = Carbon::parse($start_date);
-			$end_date = Carbon::parse($end_date);
-			if ($start_date->gte($end_date)) {
-				$this->form_validation->set_message('isExamEndGreaterThan', 'The Examination Start and End must have some difference.');
-				return false;
-			}
 
-			// if ($start_date->lte($end_date->addDays(1))) {
-			// 	$this->form_validation->set_message('isExamEndGreaterThan', 'The {field} is greater then 1 days.');
-			// 	return false;
-			// }
-
-			return true;
-		} catch (Exception $e) {
-			dd($start_date, true);
-			dd($end_date, false);
-			$this->form_validation->set_message('isExamEndGreaterThan', 'The {field} field must be a valid date');
-			return false;
-		}
-	}
-
-	public function isRegEndGreaterThan($end_date, $start_date)
-	{
-		try {
-			$start_date = Carbon::parse($start_date);
-			$end_date = Carbon::parse($end_date);
-			// if ($start_date->addDays(5)->gt($end_date)) {
-			// 	$this->form_validation->set_message('isRegEndGreaterThan', 'The Registration Start and End must have 5 days difference.');
-			// 	return false;
-			// }
-
-			if ($start_date->gte($end_date)) {
-				$this->form_validation->set_message('isRegEndGreaterThan', 'The Registration Start and End must have some difference.');
-				return false;
-			}
-			return true;
-		} catch (Exception $e) {
-			// dd($start_date, true);
-			// dd($end_date, false);
-			$this->form_validation->set_message('isRegEndGreaterThan', 'The {field} field must be a valid date');
-			return false;
-		}
-	}
-
-	public function isDate($date)
-	{
-		try {
-			$resutlt = Carbon::parse($date);
-			return true;
-		} catch (Exception $e) {
-			$this->form_validation->set_message('checkPastDate', 'The {field} field must be a valid date');
-			return false;
-		}
-	}
-
-	public function validate_user_data()
-	{
-		$this->form_validation->set_rules('e_name', 'Exam Name', 'required');
-		$this->form_validation->set_rules('e_reg_start', 'Regisration start date', 'required|callback_isDate');
-		$this->form_validation->set_rules('e_reg_end', 'Registration end date', 'required|callback_isRegEndGreaterThan[' . $this->input->post("e_reg_start") . ']');
-		$this->form_validation->set_rules('e_exam_start', 'Exam start date', 'required|callback_isDate');
-		$this->form_validation->set_rules('e_exam_end', 'Exam end date', 'required|callback_isExamEndGreaterThan[' . $this->input->post("e_exam_start") . ']');
-	}
 
 	public function create()
 	{
@@ -126,8 +61,8 @@ class Exam extends CI_Controller
 
 
 		$data['input'] = (object) $postData = [
-			'e_name'				=> $this->input->post('e_name'),
 			'e_id' 					=> isset($e_id) ? $e_id : null,
+			'e_name'				=> $this->input->post('e_name'),
 			'e_reg_start' 	=> $e_reg_start,
 			'e_reg_end' 		=> $e_reg_end,
 			'e_exam_start'	=> $e_exam_start,
@@ -138,7 +73,7 @@ class Exam extends CI_Controller
 			'e_status'			=> 1 //$this->input->post('exam_end_date'),
 		];
 
-		// dd($data);
+		// dd($postData, false);
 		// dd($_POST);
 
 		$data['exams'] = $this->exam_model->read();
@@ -152,7 +87,7 @@ class Exam extends CI_Controller
 					redirect('admin/exam/index');
 				} else {
 					#set exception message
-					$this->session->set_flashdata('exception', 'Please Try Againmmmm');
+					$this->session->set_flashdata('exception', 'Please Try Again');
 					redirect('admin/exam/create');
 				}
 			} else {
@@ -173,8 +108,8 @@ class Exam extends CI_Controller
 				redirect('admin/exam/edit/' . $e_id);
 			} else {
 				#set exception message
-				$this->session->set_flashdata('exception', 'Please Try Again');
-				redirect('admin/exam/edit/' . $e_id);
+				$this->session->set_flashdata('exception', 'Please Try Againnn');
+				$this->edit($e_id);
 			}
 		}
 	}
@@ -211,6 +146,69 @@ class Exam extends CI_Controller
 
 		echo json_encode($outData); // return json data
 
+	}
+
+	public function validate_user_data()
+	{
+		$this->form_validation->set_rules('e_name', 'Exam Name', 'required');
+		$this->form_validation->set_rules('e_reg_start', 'Regisration start date', 'required|callback_isDate');
+		$this->form_validation->set_rules('e_reg_end', 'Registration end date', 'required|callback_isRegEndGreaterThan[' . $this->input->post("e_reg_start") . ']');
+		$this->form_validation->set_rules('e_exam_start', 'Exam start date', 'required|callback_isDate');
+		$this->form_validation->set_rules('e_exam_end', 'Exam end date', 'required|callback_isExamEndGreaterThan[' . $this->input->post("e_exam_start") . ']');
+	}
+
+	public function isExamEndGreaterThan($end_date, $start_date)
+	{
+		try {
+			$start_date = Carbon::parse($start_date);
+			$end_date = Carbon::parse($end_date);
+			if ($start_date->gte($end_date)) {
+				$this->form_validation->set_message('isExamEndGreaterThan', 'The Examination Start and End must have some difference.');
+				return false;
+			}
+
+			// if ($start_date->lte($end_date->addDays(1))) {
+			// 	$this->form_validation->set_message('isExamEndGreaterThan', 'The {field} is greater then 1 days.');
+			// 	return false;
+			// }
+
+			return true;
+		} catch (Exception $e) {
+			$this->form_validation->set_message('isExamEndGreaterThan', 'The {field} field must be a valid date');
+			return false;
+		}
+	}
+
+	public function isRegEndGreaterThan($end_date, $start_date)
+	{
+		try {
+			$start_date = Carbon::parse($start_date);
+			$end_date = Carbon::parse($end_date);
+			// if ($start_date->addDays(5)->gt($end_date)) {
+			// 	$this->form_validation->set_message('isRegEndGreaterThan', 'The Registration Start and End must have 5 days difference.');
+			// 	return false;
+			// }
+
+			if ($start_date->gte($end_date)) {
+				$this->form_validation->set_message('isRegEndGreaterThan', 'The Registration Start and End must have some difference.');
+				return false;
+			}
+			return true;
+		} catch (Exception $e) {
+			$this->form_validation->set_message('isRegEndGreaterThan', 'The {field} field must be a valid date');
+			return false;
+		}
+	}
+
+	public function isDate($date)
+	{
+		try {
+			$resutlt = Carbon::parse($date);
+			return true;
+		} catch (Exception $e) {
+			$this->form_validation->set_message('checkPastDate', 'The {field} field must be a valid date');
+			return false;
+		}
 	}
 }
 

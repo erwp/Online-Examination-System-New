@@ -105,6 +105,7 @@ class Option_model extends CI_Model
 
 
 		$option_count = 0;
+		$list = array();
 		foreach ($result as $key => $option) {
 			$list['o_value'][] = $option->o_value;
 			if ($option->o_correct) {
