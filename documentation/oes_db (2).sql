@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2021 at 04:44 AM
--- Server version: 10.4.19-MariaDB
--- PHP Version: 8.0.7
+-- Generation Time: Oct 01, 2021 at 06:39 PM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 7.3.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,22 +45,7 @@ CREATE TABLE `exam_tbl` (
 --
 
 INSERT INTO `exam_tbl` (`e_id`, `e_name`, `e_reg_start`, `e_reg_end`, `e_exam_start`, `e_exam_end`, `e_doc`, `e_dou`, `e_created_by`, `e_status`) VALUES
-(1, '6th-sem', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 10:16:17', '2021-09-04 03:16:17', 0, 1),
-(2, '5th-sem', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 10:16:51', '2021-09-04 03:16:51', 0, 1),
-(3, '6th-sem', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 10:16:17', '2021-09-04 03:16:17', 0, 1),
-(4, '5th-sem', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 10:16:51', '2021-09-04 03:16:51', 0, 1),
-(5, '6th-sem', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 10:16:17', '2021-09-04 03:16:17', 0, 1),
-(6, '5th-sem', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 10:16:51', '2021-09-04 03:16:51', 0, 1),
-(7, '6th-sem', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 10:16:17', '2021-09-04 03:16:17', 0, 1),
-(8, '5th-sem', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 10:16:51', '2021-09-04 03:16:51', 0, 1),
-(9, '6th-sem', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 10:16:17', '2021-09-04 03:16:17', 0, 1),
-(10, '5th-sem', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 10:16:51', '2021-09-04 03:16:51', 0, 1),
-(11, '6th-sem', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 10:16:17', '2021-09-04 03:16:17', 0, 1),
-(12, '5th-sem', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 10:16:51', '2021-09-04 03:16:51', 0, 1),
-(13, '6th-sem', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 10:16:17', '2021-09-04 03:16:17', 0, 1),
-(14, '5th-sem', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 10:16:51', '2021-09-04 03:16:51', 0, 1),
-(15, '6th-sem', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 12:14:50', '2021-09-04 10:16:17', '2021-09-04 03:16:17', 0, 1),
-(16, '5th-sem', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 12:16:34', '2021-09-04 10:16:51', '2021-09-04 03:16:51', 0, 1);
+(10, 'Test 1', '2021-10-01 09:00:00', '2021-10-06 09:00:00', '2021-10-15 10:00:00', '2021-10-15 10:30:00', '2021-09-30 18:40:00', NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -83,10 +68,13 @@ CREATE TABLE `option_tbl` (
 --
 
 INSERT INTO `option_tbl` (`o_id`, `o_q_id`, `o_value`, `o_correct`, `o_doc`, `o_dou`, `o_status`) VALUES
-(1, 2, 'PHP Is a doormate?', '0', '2021-09-06 16:00:26', '2021-09-06 14:02:12', 1),
 (2, 2, 'PHP is a programming language.', '1', '2021-09-06 16:00:26', '2021-09-06 14:02:12', 1),
 (3, 2, 'PHP is arts book.', '0', '2021-09-06 16:00:26', '2021-09-06 14:02:12', 1),
-(4, 2, 'PHP is a keyboard type.', '0', '2021-09-06 16:00:26', '2021-09-06 14:02:12', 1);
+(4, 2, 'PHP is a keyboard type.', '0', '2021-09-06 16:00:26', '2021-09-06 14:02:12', 1),
+(52, 18, 'Test Option 1', '0', '0000-00-00 00:00:00', '2021-10-01 16:05:32', 1),
+(53, 18, 'Test Option 2', '0', '0000-00-00 00:00:00', '2021-10-01 16:05:32', 1),
+(54, 18, 'Test Option 3', '1', '0000-00-00 00:00:00', '2021-10-01 16:05:32', 1),
+(55, 18, 'Test Option 4', '0', '0000-00-00 00:00:00', '2021-10-01 16:05:32', 1);
 
 -- --------------------------------------------------------
 
@@ -108,8 +96,7 @@ CREATE TABLE `question_tbl` (
 --
 
 INSERT INTO `question_tbl` (`q_id`, `q_e_id`, `q_question`, `q_doc`, `q_dou`, `q_status`) VALUES
-(1, 1, 'What is your College name?', '2021-09-06 15:59:43', '2021-09-06 14:05:53', 1),
-(2, 1, 'What is PHP?', '2021-09-06 15:59:43', '2021-09-06 14:05:58', 1);
+(18, 10, 'Test Question 1', '2021-10-01 21:10:32', '2021-10-01 16:05:32', 1);
 
 -- --------------------------------------------------------
 
@@ -124,13 +111,20 @@ CREATE TABLE `responses_tbl` (
   `r_o_id` int(11) NOT NULL COMMENT 'Selected Option ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `responses_tbl`
+-- Table structure for table `student_exam_tbl`
 --
 
-INSERT INTO `responses_tbl` (`r_id`, `r_u_id`, `r_q_id`, `r_o_id`) VALUES
-(1, 2, 2, 4),
-(2, 4, 2, 2);
+CREATE TABLE `student_exam_tbl` (
+  `se_id` int(11) NOT NULL,
+  `se_u_id` int(11) NOT NULL COMMENT 'Student id',
+  `se_e_id` int(11) NOT NULL COMMENT 'Exam id',
+  `se_applied_date` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'When applied for the exam',
+  `se_attempted` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Whether attempted the exam or not',
+  `se_status` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -199,19 +193,32 @@ ALTER TABLE `exam_tbl`
 -- Indexes for table `option_tbl`
 --
 ALTER TABLE `option_tbl`
-  ADD PRIMARY KEY (`o_id`);
+  ADD PRIMARY KEY (`o_id`),
+  ADD KEY `o_q_id` (`o_q_id`);
 
 --
 -- Indexes for table `question_tbl`
 --
 ALTER TABLE `question_tbl`
-  ADD PRIMARY KEY (`q_id`);
+  ADD PRIMARY KEY (`q_id`),
+  ADD KEY `q_e_id` (`q_e_id`);
 
 --
 -- Indexes for table `responses_tbl`
 --
 ALTER TABLE `responses_tbl`
-  ADD PRIMARY KEY (`r_id`);
+  ADD PRIMARY KEY (`r_id`),
+  ADD KEY `r_u_id` (`r_u_id`,`r_q_id`,`r_o_id`),
+  ADD KEY `responses_tbl_ibfk_1` (`r_q_id`),
+  ADD KEY `responses_tbl_ibfk_2` (`r_o_id`);
+
+--
+-- Indexes for table `student_exam_tbl`
+--
+ALTER TABLE `student_exam_tbl`
+  ADD PRIMARY KEY (`se_id`),
+  ADD KEY `se_u_id` (`se_u_id`),
+  ADD KEY `se_e_id` (`se_e_id`);
 
 --
 -- Indexes for table `user_role_tbl`
@@ -223,7 +230,8 @@ ALTER TABLE `user_role_tbl`
 -- Indexes for table `user_tbl`
 --
 ALTER TABLE `user_tbl`
-  ADD PRIMARY KEY (`u_id`);
+  ADD PRIMARY KEY (`u_id`),
+  ADD KEY `u_user_role` (`u_user_role`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -233,25 +241,31 @@ ALTER TABLE `user_tbl`
 -- AUTO_INCREMENT for table `exam_tbl`
 --
 ALTER TABLE `exam_tbl`
-  MODIFY `e_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=17;
+  MODIFY `e_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID', AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `option_tbl`
 --
 ALTER TABLE `option_tbl`
-  MODIFY `o_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `o_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `question_tbl`
 --
 ALTER TABLE `question_tbl`
-  MODIFY `q_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `q_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `responses_tbl`
 --
 ALTER TABLE `responses_tbl`
   MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `student_exam_tbl`
+--
+ALTER TABLE `student_exam_tbl`
+  MODIFY `se_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_role_tbl`
@@ -264,6 +278,37 @@ ALTER TABLE `user_role_tbl`
 --
 ALTER TABLE `user_tbl`
   MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `question_tbl`
+--
+ALTER TABLE `question_tbl`
+  ADD CONSTRAINT `question_tbl_ibfk_1` FOREIGN KEY (`q_e_id`) REFERENCES `exam_tbl` (`e_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `responses_tbl`
+--
+ALTER TABLE `responses_tbl`
+  ADD CONSTRAINT `responses_tbl_ibfk_1` FOREIGN KEY (`r_q_id`) REFERENCES `question_tbl` (`q_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `responses_tbl_ibfk_2` FOREIGN KEY (`r_o_id`) REFERENCES `option_tbl` (`o_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `responses_tbl_ibfk_3` FOREIGN KEY (`r_u_id`) REFERENCES `user_tbl` (`u_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `student_exam_tbl`
+--
+ALTER TABLE `student_exam_tbl`
+  ADD CONSTRAINT `student_exam_tbl_ibfk_1` FOREIGN KEY (`se_u_id`) REFERENCES `user_tbl` (`u_id`),
+  ADD CONSTRAINT `student_exam_tbl_ibfk_2` FOREIGN KEY (`se_e_id`) REFERENCES `exam_tbl` (`e_id`);
+
+--
+-- Constraints for table `user_tbl`
+--
+ALTER TABLE `user_tbl`
+  ADD CONSTRAINT `user_tbl_ibfk_1` FOREIGN KEY (`u_user_role`) REFERENCES `user_role_tbl` (`ur_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
