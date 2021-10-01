@@ -73,18 +73,16 @@ class Exam extends CI_Controller
 			'e_status'			=> 1 //$this->input->post('exam_end_date'),
 		];
 
-		// dd($postData, false);
-		// dd($_POST);
-
 		$data['exams'] = $this->exam_model->read();
 		/*-----------CHECK ID -----------*/
 		if (empty($e_id)) {
 			/*-----------CREATE A NEW RECORD-----------*/
 			if ($this->form_validation->run() === true) {
 				if ($this->exam_model->create($postData)) {
+					$q_id = $this->db->insert_id();
 					#set success message
 					$this->session->set_flashdata('message', 'Save Successfully');
-					redirect('admin/exam/index');
+					redirect('admin/question/index/' . $q_id);
 				} else {
 					#set exception message
 					$this->session->set_flashdata('exception', 'Please Try Again');
@@ -138,22 +136,12 @@ class Exam extends CI_Controller
 		redirect('admin/exam/index');
 	}
 
-
-	public function upload()
-	{
-		header('Content-Type: application/json'); // set json response headers
-		$outData = upload(); // a function to upload the bootstrap-fileinput files
-
-		echo json_encode($outData); // return json data
-
-	}
-
 	public function validate_user_data()
 	{
 		$this->form_validation->set_rules('e_name', 'Exam Name', 'required');
 		$this->form_validation->set_rules('e_reg_start', 'Regisration start date', 'required|callback_isDate');
 		$this->form_validation->set_rules('e_reg_end', 'Registration end date', 'required|callback_isRegEndGreaterThan[' . $this->input->post("e_reg_start") . ']');
-		$this->form_validation->set_rules('e_exam_start', 'Exam start date', 'required|callback_isDate');
+		$this->form_validation->set_rules('e_exam_start', 'Exam start date', 'required|callback_isDate|callback_isExamStartGreaterThanRegStart[' . $this->input->post("e_reg_end") . ']');
 		$this->form_validation->set_rules('e_exam_end', 'Exam end date', 'required|callback_isExamEndGreaterThan[' . $this->input->post("e_exam_start") . ']');
 	}
 
@@ -200,6 +188,27 @@ class Exam extends CI_Controller
 		}
 	}
 
+
+	public function isExamStartGreaterThanRegStart($end_date, $start_date)
+	{
+		try {
+			$start_date = Carbon::parse($start_date);
+			$end_date = Carbon::parse($end_date);
+			// if ($start_date->addDays(5)->gt($end_date)) {
+			// 	$this->form_validation->set_message('isRegEndGreaterThan', 'The Registration Start and End must have 5 days difference.');
+			// 	return false;
+			// }
+
+			if ($start_date->gte($end_date)) {
+				$this->form_validation->set_message('isExamStartGreaterThanRegStart', 'The Examination start date must be greater then Registration end date');
+				return false;
+			}
+			return true;
+		} catch (Exception $e) {
+			$this->form_validation->set_message('isExamStartGreaterThanRegStart', 'The {field} field must be a valid date');
+			return false;
+		}
+	}
 	public function isDate($date)
 	{
 		try {
@@ -210,60 +219,4 @@ class Exam extends CI_Controller
 			return false;
 		}
 	}
-}
-
-// example of a PHP server code that is called in `uploadUrl` above
-// file-upload-batch script
-// header('Content-Type: application/json'); // set json response headers
-// $outData = upload(); // a function to upload the bootstrap-fileinput files
-// echo json_encode($outData); // return json data
-// exit(); // terminate
-
-// main upload function used above
-// upload the bootstrap-fileinput files
-// returns associative array
-function upload()
-{
-	$preview = $config = $errors = [];
-	$input = 'kartik-input-705'; // the input name for the fileinput plugin
-	if (empty($_FILES[$input])) {
-		return [];
-	}
-	$total = count($_FILES[$input]['name']); // multiple files
-	$path = base_url('/uploads/'); // your upload path
-	for ($i = 0; $i < $total; $i++) {
-		$tmpFilePath = $_FILES[$input]['tmp_name'][$i]; // the temp file path
-		$fileName = $_FILES[$input]['name'][$i]; // the file name
-		$fileSize = $_FILES[$input]['size'][$i]; // the file size
-
-		//Make sure we have a file path
-		if ($tmpFilePath != "") {
-			//Setup our new file path
-			$newFilePath = $path . $fileName;
-			$newFileUrl = 'http://localhost/uploads/' . $fileName;
-
-			//Upload the file into the new path
-			if (move_uploaded_file($tmpFilePath, $newFilePath)) {
-				$fileId = $fileName . $i; // some unique key to identify the file
-				$preview[] = $newFileUrl;
-				$config[] = [
-					'key' => $fileId,
-					'caption' => $fileName,
-					'size' => $fileSize,
-					'downloadUrl' => $newFileUrl, // the url to download the file
-					'url' => 'http://localhost/delete.php', // server api to delete the file based on key
-				];
-			} else {
-				$errors[] = $fileName;
-			}
-		} else {
-			$errors[] = $fileName;
-		}
-	}
-	$out = ['initialPreview' => $preview, 'initialPreviewConfig' => $config, 'initialPreviewAsData' => true];
-	if (!empty($errors)) {
-		$img = count($errors) === 1 ? 'file "' . $error[0]  . '" ' : 'files: "' . implode('", "', $errors) . '" ';
-		$out['error'] = 'Oh snap! We could not upload the ' . $img . 'now. Please try again later.';
-	}
-	return $out;
 }
