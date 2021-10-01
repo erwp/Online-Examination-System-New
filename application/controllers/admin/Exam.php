@@ -1,4 +1,7 @@
 <?php
+
+use Carbon\Carbon;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Exam extends CI_Controller
@@ -22,128 +25,123 @@ class Exam extends CI_Controller
 		$this->load->view("admin/home/layout/main_wrapper_view", $data);
 	}
 
-	// Not used
-	public function checkDateFormat($indate)
+	public function isExamEndGreaterThan($end_date, $start_date)
 	{
-
-		// $date_time = explode(' ',$indate);
-		// if(sizeof($date_time)==2)
-		// {
-		//     $date = $date_time[0];
-		//     $date_values = explode('-',$date);
-		// 	print_r($date_values); die();              /// month , day, year [2] [1] [0]
-		//     if((sizeof($date_values)!=3) || !checkdate( (int) $date_values[2], (int) $date_values[1], (int) $date_values[0]))
-		//     {
-		// 		$this->form_validation->set_message('checkDateFormat', 'The {field} field must be a valid date');
-		// 		return FALSE;
-		//     }
-
-		// 	if((int) $date_values[1])
-		//     $time = $date_time[1];
-		//     $time_values = explode(':',$time);
-		//     if((int) $time_values[0]>23 || (int) $time_values[1]>59 || (int) $time_values[2]>59)
-		//     {
-		// 		$this->form_validation->set_message('checkDateFormat', 'The {field} field must be a valid date');
-		// 		return FALSE;
-		//     }
-		//     return TRUE;
-		// }
-
-		// $this->form_validation->set_message('checkDateFormat', 'The {field} field must be a valid date');
-		// return FALSE;
-
-		// if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/", $date)) {
-		// 	if(checkdate(substr($date, 3, 2), substr($date, 0, 2), substr($date, 6, 4)))
-		// 		return true;
-		// 	else
-		// 		$this->form_validation->set_message('checkDateFormat', 'The {field} field must be a valid date');
-		// 		return false;
-		// } else {
-		// 	$this->form_validation->set_message('checkDateFormat', 'The {field} field must be a valid date');
-		// 	return false;
-		// }
-
-		// $d = DateTime::createFromFormat('Y-m-d H:m:sa', $date);
-		// if( $d && $d->format('Y-m-d H:m:sa') === $date){
-		// 	return true;
-		// } else {
-		// 	$this->form_validation->set_message('checkDateFormat', 'The {field} field must be a valid date');
-		// 	return false;
-		// }
-
-	}
-
-	public function checkpastdate($date)
-	{
-
 		try {
-			$date = \Carbon\Carbon::parse($date);
-		} catch (InvalidFormatException $_aa) {
-			$date = false;
+			$start_date = Carbon::parse($start_date);
+			$end_date = Carbon::parse($end_date);
+			if ($start_date->gte($end_date)) {
+				$this->form_validation->set_message('isExamEndGreaterThan', 'The Examination Start and End must have some difference.');
+				return false;
+			}
+
+			// if ($start_date->lte($end_date->addDays(1))) {
+			// 	$this->form_validation->set_message('isExamEndGreaterThan', 'The {field} is greater then 1 days.');
+			// 	return false;
+			// }
+
+			return true;
+		} catch (Exception $e) {
+			dd($start_date, true);
+			dd($end_date, false);
+			$this->form_validation->set_message('isExamEndGreaterThan', 'The {field} field must be a valid date');
+			return false;
 		}
-
-		$canBeCreated = ($date !== false);
-		if (\Carbon\Carbon::createFromFormat('Y-m-d H:m A', $date,) !== false) {
-			// valid date
-			echo "valid";
-		}
-
-		echo $date;
-
-		date_default_timezone_set("Asia/Calcutta");
-		//$reg = new DateTime($reg_date);
-		$cur = new DateTime("now");
-		//echo $reg;
-		print_r($cur);
-		// echo $reg_date;
-		// echo date('Y-m-d H:m A');
-
-		// echo (strtotime($reg_date));
-		// echo (strtotime(date('Y-m-d H:m A')));
-		//if()
-		die;
 	}
+
+	public function isRegEndGreaterThan($end_date, $start_date)
+	{
+		try {
+			$start_date = Carbon::parse($start_date);
+			$end_date = Carbon::parse($end_date);
+			// if ($start_date->addDays(5)->gt($end_date)) {
+			// 	$this->form_validation->set_message('isRegEndGreaterThan', 'The Registration Start and End must have 5 days difference.');
+			// 	return false;
+			// }
+
+			if ($start_date->gte($end_date)) {
+				$this->form_validation->set_message('isRegEndGreaterThan', 'The Registration Start and End must have some difference.');
+				return false;
+			}
+			return true;
+		} catch (Exception $e) {
+			// dd($start_date, true);
+			// dd($end_date, false);
+			$this->form_validation->set_message('isRegEndGreaterThan', 'The {field} field must be a valid date');
+			return false;
+		}
+	}
+
+	public function isDate($date)
+	{
+		try {
+			$resutlt = Carbon::parse($date);
+			return true;
+		} catch (Exception $e) {
+			$this->form_validation->set_message('checkPastDate', 'The {field} field must be a valid date');
+			return false;
+		}
+	}
+
 	public function validate_user_data()
 	{
-		$this->form_validation->set_rules('exam_name', 'Exam Name', 'required');
-		$this->form_validation->set_rules('reg_start_date', 'Regisration start date', 'required|callback_checkpastdate');
-		$this->form_validation->set_rules('reg_end_date', 'Registration end date', 'required');
-		$this->form_validation->set_rules('exam_start_date', 'Exam start date', 'required');
-		$this->form_validation->set_rules('exam_end_date', 'Exam end date', 'required');
+		$this->form_validation->set_rules('e_name', 'Exam Name', 'required');
+		$this->form_validation->set_rules('e_reg_start', 'Regisration start date', 'required|callback_isDate');
+		$this->form_validation->set_rules('e_reg_end', 'Registration end date', 'required|callback_isRegEndGreaterThan[' . $this->input->post("e_reg_start") . ']');
+		$this->form_validation->set_rules('e_exam_start', 'Exam start date', 'required|callback_isDate');
+		$this->form_validation->set_rules('e_exam_end', 'Exam end date', 'required|callback_isExamEndGreaterThan[' . $this->input->post("e_exam_start") . ']');
 	}
+
 	public function create()
 	{
-		var_dump($_POST);
-		$data[] = "";
-
 		$this->validate_user_data();
 		$e_id = $this->input->post('e_id');
 
-		//  -! empty($start_date) ? $start_date : date("Y-m-d", strtotime("-" . (date('d') - 1) . " day", strtotime(date('Y-m-d'))));
-		// echo $today = \Carbon\Carbon::now("Asia/Kolkata");
-		// echo $lastDayofMonth =    \Carbon\Carbon::parse($today)->endOfMonth()->toDateString();
 
-		//die();
-		$curDateTime = Carbon\Carbon::today("Asia/Kolkata");
-		$e_reg_start = $this->input->post('e_reg_start');
-		$e_reg_end = $this->input->post('e_reg_end');
-		$e_exam_start = $this->input->post('e_exam_start');
-		$e_exam_end = $this->input->post('e_exam_end');
+		$curDateTime = Carbon::today("Asia/Kolkata");
+
+		// dd(Carbon::parse($this->input->post('e_reg_start'))->toDateTimeString());
+		// dd($this->input->post('e_reg_start'));
+
+		$e_reg_start = empty($this->input->post('e_reg_start')) ?
+			Carbon::today("Asia/Kolkata")->hours(9)->minutes(0)->toDateTimeString() :
+			$this->input->post('e_reg_start');
+		// Carbon::parse($this->input->post('e_reg_start'))->toDateTimeString();
+
+		$e_reg_end = empty($this->input->post('e_reg_end')) ?
+			Carbon::today("Asia/Kolkata")->hours(9)->minutes(0)->toDateTimeString() :
+			$this->input->post('e_reg_end');
+		// Carbon::parse($this->input->post('e_reg_end'))->toDateTimeString();
+
+
+		$e_exam_start = empty($this->input->post('e_exam_start')) ?
+			Carbon::today("Asia/Kolkata")->addDays(14)->hours(10)->minutes(0)->toDateTimeString() :
+			$this->input->post('e_exam_start');
+		// Carbon::parse($this->input->post('e_exam_start'))->toDateTimeString();
+
+		$e_exam_end = empty($this->input->post('e_exam_end')) ?
+			Carbon::today("Asia/Kolkata")->addDays(14)->hours(10)->minutes(30)->toDateTimeString() :
+			$this->input->post('e_exam_end');
+		// Carbon::parse($this->input->post('e_exam_end'))->toDateTimeString();
+
 
 		$data['input'] = (object) $postData = [
 			'e_name'				=> $this->input->post('e_name'),
 			'e_id' 					=> isset($e_id) ? $e_id : null,
-			'e_reg_start' 	=> empty($e_reg_start) ? $curDateTime : $e_reg_start,
-			'e_reg_end' 		=> empty($e_reg_end) ?	$curDateTime->copy()->addDays(15) : $e_reg_end,
-			'e_exam_start'	=> empty($e_exam_start) ? $curDateTime->copy()->addDays(30) : $e_exam_start,
-			'e_exam_end'		=> empty($e_exam_end) ? $curDateTime->copy()->addMinutes(30) : $e_exam_end,
-			'e_doc'					=> $curDateTime,
-			'e_dou'					=> empty($e_id) ? null : $curDateTime,
+			'e_reg_start' 	=> $e_reg_start,
+			'e_reg_end' 		=> $e_reg_end,
+			'e_exam_start'	=> $e_exam_start,
+			'e_exam_end'		=> $e_exam_end,
+			'e_doc'					=> $curDateTime->format("Y-m-d H:m A"),
+			'e_dou'					=> empty($e_id) ? null : $curDateTime->format("Y-m-d H:m A"),
 			'e_created_by'	=> $this->session->userdata('user_id'),
 			'e_status'			=> 1 //$this->input->post('exam_end_date'),
 		];
 
+		// dd($data);
+		// dd($_POST);
 
+		$data['exams'] = $this->exam_model->read();
 		/*-----------CHECK ID -----------*/
 		if (empty($e_id)) {
 			/*-----------CREATE A NEW RECORD-----------*/
@@ -204,4 +202,70 @@ class Exam extends CI_Controller
 		}
 		redirect('admin/exam/index');
 	}
+
+
+	public function upload()
+	{
+		header('Content-Type: application/json'); // set json response headers
+		$outData = upload(); // a function to upload the bootstrap-fileinput files
+
+		echo json_encode($outData); // return json data
+
+	}
+}
+
+// example of a PHP server code that is called in `uploadUrl` above
+// file-upload-batch script
+// header('Content-Type: application/json'); // set json response headers
+// $outData = upload(); // a function to upload the bootstrap-fileinput files
+// echo json_encode($outData); // return json data
+// exit(); // terminate
+
+// main upload function used above
+// upload the bootstrap-fileinput files
+// returns associative array
+function upload()
+{
+	$preview = $config = $errors = [];
+	$input = 'kartik-input-705'; // the input name for the fileinput plugin
+	if (empty($_FILES[$input])) {
+		return [];
+	}
+	$total = count($_FILES[$input]['name']); // multiple files
+	$path = base_url('/uploads/'); // your upload path
+	for ($i = 0; $i < $total; $i++) {
+		$tmpFilePath = $_FILES[$input]['tmp_name'][$i]; // the temp file path
+		$fileName = $_FILES[$input]['name'][$i]; // the file name
+		$fileSize = $_FILES[$input]['size'][$i]; // the file size
+
+		//Make sure we have a file path
+		if ($tmpFilePath != "") {
+			//Setup our new file path
+			$newFilePath = $path . $fileName;
+			$newFileUrl = 'http://localhost/uploads/' . $fileName;
+
+			//Upload the file into the new path
+			if (move_uploaded_file($tmpFilePath, $newFilePath)) {
+				$fileId = $fileName . $i; // some unique key to identify the file
+				$preview[] = $newFileUrl;
+				$config[] = [
+					'key' => $fileId,
+					'caption' => $fileName,
+					'size' => $fileSize,
+					'downloadUrl' => $newFileUrl, // the url to download the file
+					'url' => 'http://localhost/delete.php', // server api to delete the file based on key
+				];
+			} else {
+				$errors[] = $fileName;
+			}
+		} else {
+			$errors[] = $fileName;
+		}
+	}
+	$out = ['initialPreview' => $preview, 'initialPreviewConfig' => $config, 'initialPreviewAsData' => true];
+	if (!empty($errors)) {
+		$img = count($errors) === 1 ? 'file "' . $error[0]  . '" ' : 'files: "' . implode('", "', $errors) . '" ';
+		$out['error'] = 'Oh snap! We could not upload the ' . $img . 'now. Please try again later.';
+	}
+	return $out;
 }

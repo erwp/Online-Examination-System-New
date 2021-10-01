@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'a092295e08cda48609550ddbb2bd223fa46c5bd2',
+    'reference' => '3bf092bff738fa2ca38dd77e5523ea26587f82f1',
     'name' => 'codeigniter/framework',
   ),
   'versions' => 
@@ -27,7 +27,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'a092295e08cda48609550ddbb2bd223fa46c5bd2',
+      'reference' => '3bf092bff738fa2ca38dd77e5523ea26587f82f1',
     ),
     'doctrine/instantiator' => 
     array (
@@ -37,6 +37,16 @@
       array (
       ),
       'reference' => 'd56bf6102915de5702778fe20f2de3b2fe570b5b',
+    ),
+    'kartik-v/bootstrap-fileinput' => 
+    array (
+      'pretty_version' => 'dev-master',
+      'version' => 'dev-master',
+      'aliases' => 
+      array (
+        0 => '5.2.x-dev',
+      ),
+      'reference' => '642849327db63231922558b580e985e27beddfc1',
     ),
     'mikey179/vfsstream' => 
     array (

@@ -13,7 +13,8 @@
 	"require": {
 		"php": ">=5.3.7",
 		"almasaeed2010/adminlte": "~3.0",
-		"nesbot/carbon": "^2.53"
+		"nesbot/carbon": "^2.53",
+		"kartik-v/bootstrap-fileinput": "@dev"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
