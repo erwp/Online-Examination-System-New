@@ -144,8 +144,15 @@ class Response_model extends CI_Model
 
 
             // Sort By Student Chossen option
-            $chosenOption = $this->db->select('r_o_id')->from('response_tbl')->where('r_q_id', $question->q_id)->where('r_u_id', $student->se_u_id)->get()->row()->r_o_id;
+            $chosenOption = $this->db->select('r_o_id')->from('response_tbl')->where('r_q_id', $question->q_id)->where('r_u_id', $student->se_u_id)->get()->row();
+
+            if ($chosenOption == null) {
+              $chosenOption = null;
+            } else {
+              $chosenOption = $chosenOption->r_o_id;
+            }
             if ($chosenOption != null) {
+              //$chosenOption->r_o_id;
               $data[$student->se_u_id][$question->q_id]['chosen'] = $chosenOption;
               $data[$student->se_u_id][$question->q_id]['attempted'] = 1;
             } else {
