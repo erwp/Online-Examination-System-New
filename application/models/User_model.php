@@ -24,4 +24,27 @@ class User_model extends CI_Model
 			return false;
 		}
 	}
+
+	public function get_enrolled_student_list($exam_id = null)
+	{
+		$enrolledStudent = $this->db->select('se_u_id,u_name')
+			// ->from('user_tbl')
+			->from('student_exam_tbl')
+			->where('se_e_id', $exam_id)
+			->join('user_tbl', 'se_u_id=u_id', 'left')
+			->where('u_user_role', 2)
+			->get()
+			->result();
+
+		// dd($enrolledStudent);
+		$list[''] = "All Students"; //display('select_user_role');
+		if (!empty($enrolledStudent)) {
+			foreach ($enrolledStudent as $value) {
+				$list[$value->se_u_id] = ($value->u_name);
+			}
+			return $list;
+		} else {
+			return false;
+		}
+	}
 }
