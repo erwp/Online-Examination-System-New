@@ -23,7 +23,7 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
-            <table id="example1" class="datatable1 table table-bordered table-striped">
+            <table id="example1" class="datatable1 table table-bordered table-striped table-sm">
               <thead>
                 <tr>
                   <th>S.No</th>
@@ -135,6 +135,9 @@
       "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+    console.log("Internal");
+
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,
@@ -144,5 +147,9 @@
       "autoWidth": false,
       "responsive": true,
     });
+  });
+
+  $(document).ready(function() {
+    $('#example1_wrapper .col-md-6:eq(0) div button').addClass('btn-sm');
   });
 </script>

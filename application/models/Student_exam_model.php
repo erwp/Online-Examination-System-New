@@ -11,7 +11,24 @@ class Student_exam_model extends CI_Model
     return $this->db->insert($this->table, $data);
   }
 
-  public function read_by_exam_by_student()
+  public function read_by_exam_by_student($std_id)
+  {
+    $result =  $this->db->select('*')
+      ->from($this->table)
+      ->where('se_u_id', $std_id)
+      ->get()
+      ->result();
+    $list = [];
+    if (!empty($result)) {
+      foreach ($result as $std_exam) {
+        $list[$std_exam->se_e_id]['approved'] = $std_exam->se_approved;
+        $list[$std_exam->se_e_id]['attempted'] = $std_exam->se_attempted;
+      }
+    }
+    return $list;
+  }
+
+  public function read_by_exam_by_all_students()
   {
     $result =  $this->db->select('*')
       ->from($this->table)
@@ -19,13 +36,16 @@ class Student_exam_model extends CI_Model
       ->result();
 
     $list = [];
+
     if (!empty($result)) {
       foreach ($result as $std_exam) {
-        $list[$std_exam->se_e_id][$std_exam->se_u_id] = 1;
+        $list[$std_exam->se_e_id][$std_exam->se_u_id]['applied'] = 1;
+        $list[$std_exam->se_e_id][$std_exam->se_u_id]['approved'] = $std_exam->se_approved;
+        $list[$std_exam->se_e_id][$std_exam->se_u_id]['attempted'] = $std_exam->se_attempted;
       }
     }
+
     return $list;
-    // dd($list, 0);
   }
 
   public function read_by_id($id = null)
@@ -42,6 +62,7 @@ class Student_exam_model extends CI_Model
     return $this->db->where('q_id', $data['q_id'])
       ->update($this->table, $data);
   }
+
   public function delete($id = null)
   {
     $this->db->where('q_id', $id)
@@ -52,5 +73,27 @@ class Student_exam_model extends CI_Model
     } else {
       return false;
     }
+  }
+
+  public function total_exams_applied_by_student($std_id)
+  {
+    return count($this->read_by_exam_by_student($std_id));
+  }
+
+  public function total_exams_attempted_by_student($std_id)
+  {
+    $arrmixAllExamsByStudent = $this->read_by_exam_by_student($std_id);
+
+    $count = 0;
+
+    if (!empty($arrmixAllExamsByStudent)) {
+      foreach ($arrmixAllExamsByStudent as $exam) {
+        if ($exam['attempted'] == 1) {
+          $count++;
+        }
+      }
+    }
+
+    return $count ?? 0;
   }
 }

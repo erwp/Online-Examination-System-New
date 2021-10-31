@@ -3,7 +3,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Exam_model extends CI_Model
 {
-
+	public function __construct()
+	{
+		parent::__construct();
+		date_default_timezone_set("Asia/Kolkata");
+	}
 	private $table = "exam_tbl";
 
 	public function read_by_user($user_id = null)
@@ -14,6 +18,7 @@ class Exam_model extends CI_Model
 			->get()
 			->result();
 	}
+
 	public function read()
 	{
 		return $this->db->select('*')
@@ -22,22 +27,66 @@ class Exam_model extends CI_Model
 			->result();
 	}
 
-	public function read_upcomming_exams()
+	public function read_todays_exam($std_id)
 	{
 		return $this->db->select('*')
 			->from($this->table)
-			->where('e_reg_end < ', date('Y-m-d H:m:s'))
+			->join('student_exam_tbl', 'se_e_id=e_id', 'left')
+			->where('se_approved', 1)
+			->where('date(e_exam_start)', date('Y-m-d'))
+			->where('se_attempted', 0)
+			->where('se_u_id', $std_id)
+			->get()->result();
+		// ->get_compiled_select();
+		// ->result();
+	}
+
+	public function read_applied_exams($std_id)
+	{
+		return $this->db->select('*')
+			->from($this->table)
+			->join('student_exam_tbl', 'se_e_id=e_id', 'left')
+			->where('se_approved', 0)
+			->where('se_attempted', 0)
+			->where('se_u_id', $std_id)
 			->get()
 			->result();
-		// ->get_compiled_select();
-		//->result();
+	}
+
+	public function read_approved_exams($std_id)
+	{
+		return $this->db->select('*')
+			->from($this->table)
+			->join('student_exam_tbl', 'se_e_id=e_id', 'left')
+			->where('se_approved', 1)
+			->where('se_attempted', 0)
+			->where('se_u_id', $std_id)
+			->get()
+			->result();
+	}
+	public function read_upcomming_exams($returnsql = false)
+	{
+		date_default_timezone_set("Asia/Kolkata");
+
+		$this->db->select('*')
+			->from($this->table)
+			//->join('student_exam_tbl', 'se_e_id=e_id', 'left')
+			->where('e_reg_end >= ', date('Y-m-d H:m:s'))
+			->order_by('e_reg_end', 'desc');
+
+		if ($returnsql == true) {
+			return $this->db->get_compiled_select();
+		} else {
+			return $this->db->get()->result();
+		}
+		//->where('se_approved =', null)
 	}
 
 	public function read_past_exams()
 	{
 		return $this->db->select('*')
 			->from($this->table)
-			->where('e_reg_end >= ', date('Y-m-d H:m:s'))
+			->where('e_exam_start < ', date('Y-m-d H:m:s'))
 			->get()
 			->result();
 	}

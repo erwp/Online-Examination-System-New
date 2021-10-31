@@ -14,7 +14,8 @@
         <img src="<?php echo base_url('vendor/almasaeed2010/adminlte/'); ?>dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">Online ES</a>
+        <a href="#" class="d-block"><?php echo ucfirst($_SESSION['fullname']); ?></a>
+        <span class="badge text-white">User type:</span><span class="right badge badge-success"> Student</span>
       </div>
     </div>
 
@@ -43,8 +44,8 @@
             </p>
           </a>
         </li>
-        <li class="nav-item <?php echo ($this->uri->segment(2) == "exam") ? "menu-is-opening menu-open" : null; ?>">
-          <a href="<?php echo base_url('student/exam/index'); ?>" class="nav-link <?php echo ($this->uri->segment(2) == "exam") ? "active" : null; ?>">
+        <li class="nav-item ">
+          <a href="<?php echo base_url('student/exam/index'); ?>" class="nav-link <?php echo ($this->uri->segment(2) == "exam" && $this->uri->segment(3) == "index") ? "active" : null; ?>">
             <!-- <i class="nav-icon fas fa-copy"></i> -->
             <i class="nav-icon fas fa-user-graduate"></i>
             <p>
@@ -53,7 +54,15 @@
             </p>
           </a>
         </li>
-
+        <li class="nav-item ">
+          <a href="<?php echo base_url('student/exam/take'); ?>" class="nav-link <?php echo ($this->uri->segment(3) == "take") ? "active" : null; ?>">
+            <i class="nav-icon fas fa-edit"></i>
+            <p>
+              Take Exam
+              <span class="badge badge-info right"></span>
+            </p>
+          </a>
+        </li>
         <li class="nav-item <?php echo ($this->uri->segment(2) == "response") ? "menu-is-opening menu-open" : null; ?>">
           <a href="<?php echo base_url('student/response/index'); ?>" class="nav-link <?php echo ($this->uri->segment(2) == "response") ? "active" : null; ?>">
             <i class="nav-icon fas fa-edit"></i>
