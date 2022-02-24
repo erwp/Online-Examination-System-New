@@ -55,7 +55,19 @@ echo "</pre>"
             </div>
             <div class="card-body">
               <input type="hhidden" name="exam_id" value="<?php echo $exam_id; ?>">
-              -
+              <?php if (!empty($questions)) {
+                foreach ($questions as $q_id => $question) { ?>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Select Exam</label>
+                        <?php echo form_dropdown('q_e_id', $exam_list, $input->q_e_id, 'class="form-control" id="q_e_id" '); ?>
+                        <?php echo form_error('q_e_id', '<span class="error text-danger text-xs"> ', '</span>'); ?>
+                      </div>
+                    </div>
+                  </div>
+              <?php }
+              } ?>
             </div>
             <div class="card-footer"></div>
           </div>
